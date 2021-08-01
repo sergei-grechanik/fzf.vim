@@ -441,6 +441,17 @@ function! fzf#vim#buffer_lines(...)
   \}, args)
 endfunction
 
+" My buffer lines, with query uses at the initial query string
+function! fzf#vim#my_buffer_lines(...)
+  let [query, args] = (a:0 && type(a:1) == type('')) ?
+        \ [a:1, a:000[1:]] : ['', a:000]
+  return s:fzf('blines', {
+  \ 'source':  s:buffer_lines(''),
+  \ 'sink*':   s:function('s:buffer_line_handler'),
+  \ 'options': s:reverse_list(['+m', '--tiebreak=index', '--multi', '--prompt', 'BLines> ', '--query', query, '--ansi', '--extended', '--nth=2..', '--tabstop=1'])
+  \}, args)
+endfunction
+
 " ------------------------------------------------------------------
 " Colors
 " ------------------------------------------------------------------
