@@ -568,7 +568,7 @@ function! s:history_sink(type, lines)
   let prefix = "\<plug>(-fzf-".a:type.')'
   let key  = a:lines[0]
   let item = matchstr(a:lines[1], ' *[0-9]\+ *\zs.*')
-  if key == 'ctrl-e'
+  if key == 'ctrl-e' || 1 " my: always edit
     call histadd(a:type, item)
     redraw
     call feedkeys(a:type."\<up>", 'n')
