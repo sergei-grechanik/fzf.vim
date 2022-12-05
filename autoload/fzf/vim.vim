@@ -545,7 +545,17 @@ function! fzf#vim#_recent_files()
     \ filter([expand('%')], 'len(v:val)')
     \   + filter(map(fzf#vim#_buflisted_sorted(), 'bufname(v:val)'), 'len(v:val)')
     \   + copy(v:oldfiles),
-    \ 'fnamemodify(v:val, ":~:.")'))
+    \ 'fzf#vim#_my_name_modify(v:val)'))
+endfunction
+
+function! fzf#vim#_my_name_modify(val)
+  let fn = fnamemodify(a:val, ":~:.")
+  " If fn starts with / or ~, it's a different project, highlight it with red
+  if fn =~# '^\(\/\|\~\|fugitive:\)'
+    return "\e[38;5;5m" . fn . "\e[39m"
+  else
+    return fn
+  endif
 endfunction
 
 function! s:history_source(type)
@@ -606,7 +616,7 @@ endfunction
 function! fzf#vim#history(...)
   return s:fzf('history-files', {
   \ 'source':  fzf#vim#_recent_files(),
-  \ 'options': ['-m', '--header-lines', !empty(expand('%')), '--prompt', 'Hist> ']
+  \ 'options': ['--ansi', '-m', '--header-lines', !empty(expand('%')), '--prompt', 'Hist> ']
   \}, a:000)
 endfunction
 
