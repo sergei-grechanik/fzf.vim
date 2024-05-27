@@ -552,7 +552,7 @@ function! fzf#vim#_my_name_modify(val)
   let fn = fnamemodify(a:val, ":~:.")
   " If fn starts with / or ~, it's a different project, highlight it with red
   if fn =~# '^\(\/\|\~\|fugitive:\)'
-    return "\e[38;5;5m" . fn . "\e[39m"
+    return "\e[38;5;3m" . fn . "\e[39m"
   else
     return fn
   endif
